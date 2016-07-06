@@ -1,10 +1,10 @@
 #===BEGIN CONFIG===
 #How many threads should be made for the use of dlup?
-maxThreads = 10
+MAX_THREADS = 10
 #How many times should each thread loop?
-loopsPerThread = 25
+LOOPS_PER_THREAD = 25
 #What do you want to use dlup for? Specify absolute URLs of your targets
-targets = []
+TARGETS = []
 #===END CONFIG===
 
 import threading
@@ -16,7 +16,7 @@ class DownloadThread(threading.Thread):
         self.url = url
     def run(self):
         print "Started thread: %s, target: %s." % (threading.currentThread().name, self.url)
-        for i in range(loopsPerThread):
+        for i in range(LOOPS_PER_THREAD):
             try:
                 urllib2.urlopen(self.url).read()
                 print "Sent request #%d from %s." % (i + 1, threading.currentThread().name)
@@ -34,10 +34,10 @@ print """
 
   ~ dlup by Gamecrafter, made for education purposes
 """
-print "Found %d target(s)." % len(targets)
+print "Found %d target(s)." % len(TARGETS)
 threads = []
-for target in targets:
-    [threads.append(DownloadThread(target)) for i in range(int(maxThreads / len(targets)))]
+for target in TARGETS:
+    [threads.append(DownloadThread(target)) for i in range(int(MAX_THREADS / len(TARGETS)))]
 [thread.start() for thread in threads]
 [thread.join() for thread in threads]
 print "Everything seems to have been finished, bye..."
